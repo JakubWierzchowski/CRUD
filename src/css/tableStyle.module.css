@@ -1,0 +1,86 @@
+body {
+  margin: 0 auto !important;
+  background-color: rgb(188, 187, 187);
+
+  background-size: 33.5vw;
+}
+
+.table {
+  margin: 0 auto;
+  width: 80%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+  margin-bottom: 20px;
+}
+.table,
+td,
+th {
+  font-size: 20px;
+  border-top: 1px solid #ddd;
+  padding: 5px 12px;
+  font-weight: 400;
+  vertical-align: top;
+  line-height: 30px;
+}
+
+.tr > .td:nth-child(1) .topTable {
+  background-color: #d9d9d9;
+}
+.table tbody tr:nth-child(even) {
+  background-color: #e8e8e85c;
+}
+.button {
+  font-size: 10px;
+  margin: 5px;
+  padding: 5px 12px;
+}
+
+.button2 {
+  font-size: 10px;
+  margin: 5px;
+  padding: 5px 12px;
+  background-color: red;
+}
+.buttonExport {
+  font-size: 10px;
+  margin: 5px;
+  padding: 5px 12px;
+  font-size: 40px;
+  background-color: rgb(25, 119, 18);
+}
+
+.filtrExpot {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 auto;
+}
+.buttonClass {
+  border-color: rgb(171, 171, 171);
+  background-color: rgb(255, 252, 252);
+  color: rgb(0, 0, 0);
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 20px;
+}
+
+.buttonClass:hover {
+  /* border-color: rgb(25, 119, 18); */
+  color: rgb(0, 0, 0);
+  background-color: rgb(12, 176, 0);
+}
+
+.buttonClass:focus {
+  /* border-color: rgb(25, 119, 18); */
+  color: rgb(0, 0, 0);
+  background-color: rgba(12, 176, 0);
+}
+
+.divText {
+  display: flex;
+  justify-content: flex-end;
+}
