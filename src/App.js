@@ -4,10 +4,11 @@ import db from "./firebase-config";
 import styled from "styled-components";
 
 import Styles from "./css/App.module.css";
-import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import Table from "./table";
 import Koszyk from "./koszyk";
+import SelectCategories from "./SelectCategories";
 
 const Button = styled.button`
   border: 0;
@@ -27,28 +28,21 @@ const Input = styled.input`
   margin: 10px 0;
   font-size: 20px;
 `;
-const DivGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 400px;
-`;
 
 function AddnewPlayer() {
   const [users, setusers] = useState([{ name: "Loading...", id: "initial" }]);
-  const [part, setPart] = useState([]);
-  const [klub, setKlub] = useState("");
+  const [part, setPart] = useState("");
+  const [firm, setFirm] = useState("");
   const [price, setPrice] = useState("");
   const [categories, setCategories] = useState("Niezbędne");
   const playerCollectionRef = collection(db, "officeEq");
-  const [editBox, setEditBox] = useState(false);
-  const [q, setQ] = useState("");
   const [shop, setShop] = useState("Niezbędne");
 
   const handleNew = async (e) => {
     e.preventDefault();
     await addDoc(playerCollectionRef, {
-      user: part,
-      klub,
+      part,
+      firm,
       price,
       categories,
     });
@@ -60,9 +54,8 @@ function AddnewPlayer() {
       ),
     []
   );
-
+  // console.log(users.map((item) => item.categories));
   const x = users.map((item) => parseFloat(item.price));
-
   const sum = x.reduce((acc, el) => acc + el, 0);
 
   const handleDelete = async (id) => {
@@ -74,6 +67,7 @@ function AddnewPlayer() {
     <>
       <div className={Styles.main}>
         <div className={Styles.mainBackground}>
+          {" "}
           <div className={Styles.flex}>
             <form>
               <h1 className={Styles.h1}>Rzeczy do kupienia : </h1>
@@ -86,7 +80,7 @@ function AddnewPlayer() {
               <label>Dane szczegółowe</label>
               <Input
                 placeholder="Firma i model produktu"
-                onChange={(event) => setKlub(event.target.value)}
+                onChange={(event) => setFirm(event.target.value)}
                 required
               />
               <label>Cena</label>
@@ -107,25 +101,15 @@ function AddnewPlayer() {
               />
 
               <label className={Styles.label}>Kategoria</label>
-              <select
-                className={Styles.select}
-                onChange={(event) => setCategories(event.target.value)}
-              >
-                <option className={Styles.option} value="Niezbędne">
-                  Niezbędne do działania komputera
-                </option>
-                <option value="Audio">Audio</option>
-                <option value="Video">Video</option>
-                <option value="Inne">Inne</option>
-              </select>
+              <SelectCategories setShop={setShop} />
 
-              {part.length && klub.length !== 0 ? (
+              {part.length && firm.length !== 0 ? (
                 <Button onClick={handleNew}>Wyślij</Button>
               ) : (
                 <div>Uzupełnij dane</div>
               )}
             </form>
-          </div>
+          </div>{" "}
           <div>
             <Table
               handleDelete={handleDelete}
@@ -133,21 +117,17 @@ function AddnewPlayer() {
               setusers={setusers}
               sum={sum}
               len={users.length}
+              setShop={setShop}
+              part={part}
+              firm={firm}
+              price={price}
+              categories={categories}
             />
-          </div>
+          </div>{" "}
+          {console.log(part)}
           <div>
             <h2>Wybierz dla której karegori wyliczyć sume :</h2>
-            <select
-              className={Styles.select}
-              onChange={(event) => setShop(event.target.value)}
-            >
-              <option className={Styles.option} value="Niezbędne">
-                Niezbędne do działania komputera
-              </option>
-              <option value="Audio">Audio</option>
-              <option value="Video">Video</option>
-              <option value="Inne">Inne</option>
-            </select>
+            <SelectCategories setShop={setShop} />
             <Koszyk
               users={users.filter((price) => price.categories === shop)}
               shop={shop}

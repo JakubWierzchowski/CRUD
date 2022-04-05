@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import db from "./firebase-config";
+import SelectCategories from "./SelectCategories";
 
 import styled from "styled-components";
 import styless from "./css/tableStyle.module.css";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
-const Button = styled.button`
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-`;
 const Input = styled.input`
   border: 0;
   padding: 8px;
@@ -23,16 +19,57 @@ const Input = styled.input`
   background-color: rgb(240, 243, 245);
 `;
 
+const Input2 = styled.input`
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 15px;
+  margin: 0 auto;
+  width: 150px;
+
+  background-color: #868484c7;
+  ::placeholder {
+    color: white;
+  }
+`;
+
 const DeleteButton = styled.button`
   border: 0;
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 20px;
-  background-color: red;
+  background-color: rgba(253, 7, 7, 0.704);
+  margin: 5px;
+`;
+const EditButton = styled.button`
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  background-color: rgba(18, 178, 7, 0.744);
+  margin: 5px;
+`;
+const CancelButton = styled.button`
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  background-color: #e8e8e8b7;
 `;
 
-export default function Table({ handleDelete, users, setusers, sum, len }) {
+export default function Table({
+  handleDelete,
+  users,
+  setusers,
+  sum,
+  part,
+  firm,
+  price,
+  categories,
+}) {
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState("ASC");
 
@@ -53,14 +90,9 @@ export default function Table({ handleDelete, users, setusers, sum, len }) {
     }
   };
 
-  // const categoriesSum = users.map((item) => parseFloat(item.price));
-  {
-    const x = users.map((item) => parseFloat(item.price));
-  }
-
   const columns = [
-    { title: "Jednostka", field: "user" },
-    { title: "Firma/model", field: "klub" },
+    { title: "Jednostka", field: "part" },
+    { title: "Firma/model", field: "firm" },
     { title: "Cena", field: "price", type: "numeric" },
     { title: "Kategoria", field: "categories" },
   ];
@@ -74,11 +106,36 @@ export default function Table({ handleDelete, users, setusers, sum, len }) {
     });
     doc.save("table.pdf");
   };
+  const [click, setClick] = useState(false);
+
+  const handleEdit = (id, users) => {
+    setClick(true);
+  };
+
+  const [editPart, seteditPart] = useState("");
+  const [editFirm, seteditFirm] = useState("");
+  const [editPrice, seteditPrice] = useState("");
+  const [editCategories, seteditCategories] = useState("");
+
+  const updateUser = async (id, user) => {
+    const userDoc = doc(db, "officeEq", id);
+    const newFields = {
+      part: editPart === "" ? "uzupełnij pole" : editPart,
+      firm: editFirm === "" ? "uzupełnij pole" : editFirm,
+      price: editPrice === "" ? "0" : editPrice,
+      categories: editCategories === "" ? "uzupełnij pole" : editCategories,
+    };
+
+    setClick(false);
+    await updateDoc(userDoc, newFields);
+  };
+
+  const handleCancel = (id) => {
+    setClick(false);
+  };
 
   return (
     <>
-      {" "}
-      {/* <button onClick{() => downloadPdf()}>Export</button> */}
       <div className={styless.filtrExpot}>
         <Input
           type="text"
@@ -90,7 +147,7 @@ export default function Table({ handleDelete, users, setusers, sum, len }) {
         <button className={styless.buttonClass} onClick={() => downloadPdf()}>
           Export PDF
         </button>
-      </div>
+      </div>{" "}
       <table className={styless.table}>
         <thead>
           <tr className={(styless.tr, styless.topTable)}>
@@ -98,11 +155,11 @@ export default function Table({ handleDelete, users, setusers, sum, len }) {
               <strong>L.P</strong>
             </th>
 
-            <th className={styless.td} onClick={() => sorting("user")}>
+            <th className={styless.td} onClick={() => sorting("part")}>
               <strong>Jednostka</strong>
             </th>
 
-            <th className={styless.td} onClick={() => sorting("klub")}>
+            <th className={styless.td} onClick={() => sorting("firm")}>
               <strong>Firma/Model</strong>
             </th>
             <th className={styless.td} onClick={() => sorting("price")}>
@@ -131,49 +188,83 @@ export default function Table({ handleDelete, users, setusers, sum, len }) {
             })
             .map((val, index) => (
               <>
-                <tr className={styless.tr} key={val.id}>
-                  <td className={styless.td}>{index + 1}</td>
-                  <td className={styless.td} key={val.user}>
-                    {val.user}
-                  </td>
-                  <td className={styless.td}>{val.klub} </td>
-                  <td className={styless.td}>{Number(val.price)}</td>
-                  <td className={styless.td}>{val.categories} </td>
-                  <td>
-                    <DeleteButton onClick={() => handleDelete(val.id)}>
-                      delete
-                    </DeleteButton>
-
-                    {/* <Button
-  className={styless.button2}
-  onClick={() =>
-    editDoc({
-      user: part,
-      klub: klub,
-      price: price,
-      categories: categories,
-      id: dev.id,
-    })
-  }
->
-  update
-</Button> */}
-                  </td>
-                </tr>
+                {click ? (
+                  <tr key={val.id}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <Input2
+                        placeholder={val.part}
+                        onChange={(event) => seteditPart(event.target.value)}
+                        required
+                      />
+                    </td>
+                    <td>
+                      <Input2
+                        placeholder={val.firm}
+                        onChange={(event) => seteditFirm(event.target.value)}
+                        required
+                      />
+                    </td>
+                    <td>
+                      <Input2
+                        placeholder={val.price}
+                        onChange={(event) => seteditPrice(event.target.value)}
+                        required
+                      />
+                    </td>
+                    <td>
+                      <Input2
+                        placeholder={val.categories}
+                        onChange={(event) =>
+                          seteditCategories(event.target.value)
+                        }
+                        required
+                      />
+                      {/* <SelectCategories
+                        setShop={setShop}
+                        onChange={(event) =>
+                          seteditCategories(event.target.value)
+                        }
+                      />{" "}
+                      {console.log(editCategories)} */}
+                    </td>
+                    <td>
+                      <EditButton onClick={() => updateUser(val.id)}>
+                        Save
+                      </EditButton>
+                      <CancelButton onClick={handleCancel}>cancel</CancelButton>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr className={styless.tr} key={val.id}>
+                    <td className={styless.td}>{index + 1}</td>
+                    <td className={styless.td} key={val.part}>
+                      {val.part}
+                    </td>
+                    <td className={styless.td}>{val.firm} </td>
+                    <td className={styless.td}>{Number(val.price) + "$"}</td>
+                    <td className={styless.td}>{val.categories} </td>
+                    <td>
+                      <DeleteButton onClick={() => handleDelete(val.id)}>
+                        delete
+                      </DeleteButton>
+                      <EditButton onClick={() => handleEdit(val.id)}>
+                        {" "}
+                        Edit
+                      </EditButton>
+                    </td>
+                  </tr>
+                )}
               </>
             ))}
+
           <tr>
-            <td colspan="6">
+            <td colSpan="6">
               <div className={styless.divText}>
                 Łączny koszyk: {sum}$ dla ilości elementów : {users.length}
               </div>
             </td>
           </tr>
-          {/* <tr>
-            <div>
-          
-            </div>
-          </tr> */}
         </tbody>
       </table>
       <div> </div>

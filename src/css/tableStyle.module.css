@@ -12,6 +12,7 @@ body {
   border-spacing: 0;
   table-layout: fixed;
   margin-bottom: 20px;
+  text-align: left;
 }
 .table,
 td,
@@ -40,14 +41,14 @@ th {
   font-size: 10px;
   margin: 5px;
   padding: 5px 12px;
-  background-color: red;
+  background-color: rgba(253, 7, 7, 0.704);
 }
 .buttonExport {
   font-size: 10px;
   margin: 5px;
   padding: 5px 12px;
   font-size: 40px;
-  background-color: rgb(25, 119, 18);
+  background-color: rgba(25, 119, 18, 0.444);
 }
 
 .filtrExpot {
