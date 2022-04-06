@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
-import db from "./firebase-config";
+import db from "../../firebase-config";
 
 import styled from "styled-components";
-import styless from "./css/tableStyle.module.css";
+import styless from "./tableStyle.module.css";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";

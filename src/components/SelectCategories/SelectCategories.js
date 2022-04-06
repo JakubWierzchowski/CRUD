@@ -1,5 +1,5 @@
 import React from "react";
-import Styles from "./css/App.module.css";
+import Styles from "../../App.module.css";
 
 export default function SelectCategories({ setShop }) {
   return (
