@@ -5,7 +5,6 @@ import styled from "styled-components";
 
 import Styles from "./css/App.module.css";
 import { doc, deleteDoc } from "firebase/firestore";
-import { ref } from "firebase/storage";
 import Table from "./table";
 import Koszyk from "./koszyk";
 import SelectCategories from "./SelectCategories";

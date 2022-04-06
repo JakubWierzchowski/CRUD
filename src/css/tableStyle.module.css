@@ -28,6 +28,13 @@ th {
 .tr > .td:nth-child(1) .topTable {
   background-color: #d9d9d9;
 }
+.td:first-child {
+  cursor: move;
+}
+
+.th {
+  cursor: pointer;
+}
 .table tbody tr:nth-child(even) {
   background-color: #e8e8e85c;
 }
