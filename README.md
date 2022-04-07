@@ -1,3 +1,5 @@
+### Opis projektu
+
 Aplikacja składa się z operacji CRUD umożliwiających dodawanie, usuwanie oraz edycje komponentów z wykorzystaniem firestore database(firebase). W projekcie zostały zainstalowane 4 biblioteki :     
 1. "jspdf": "^2.5.1", 
 2. "jspdf-autotable": "^3.5.23",     
@@ -5,11 +7,11 @@ Aplikacja składa się z operacji CRUD umożliwiających dodawanie, usuwanie ora
 4. "styled-components": "^5.3.5".
 Pierwsze dwie pozwalają na exportowanie stworzonej tabeli do pliku pdf, trzecia umożliwia użycie drag and drop na produktach zawartych w tabeli oraz czwarta odpowiada za stylowanie w plikach js. W projekcie można znaleźć również filtrowanie po kategoriach oraz sortowanie alfabetyczne po kliknięciu w nagłówek tabeli. 
 
-# Getting Started with Create React App
+### Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Available Scripts
 
 In the project directory, you can run:
 
