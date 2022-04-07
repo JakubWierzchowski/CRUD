@@ -26,11 +26,11 @@ export default function AddItems({
   setFirm,
   setPrice,
   SelectCategories,
-  setShop,
   part,
   price,
   firm,
   handleNew,
+  setCategories,
 }) {
   return (
     <div className={Styles.flex}>
@@ -64,10 +64,8 @@ export default function AddItems({
           min="0"
           oninput="validity.valid||(value='');"
         />
-
-        <label className={Styles.label}>Kategoria</label>
-        <SelectCategories setShop={setShop} />
-
+        <label className={Styles.label}>Kategoria</label>{" "}
+        <SelectCategories selectCategory={setCategories} />
         {part.length && firm.length && price.length !== 0 ? (
           <Button onClick={handleNew}>Wyślij</Button>
         ) : (

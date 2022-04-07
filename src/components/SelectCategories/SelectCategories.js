@@ -1,21 +1,35 @@
 import React from "react";
-import Styles from "../../App.module.css";
+import styled from "styled-components";
 
-export default function SelectCategories({ setShop }) {
+const Select = styled.select`
+  width: 80%;
+  display: block;
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin: 10px 0 20px 0;
+  font-size: 20px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  line-height: 1.1;
+  background-color: #fff;
+`;
+
+export default function SelectCategories({ selectCategory }) {
+  const options = [
+    { value: "Niezbędne", label: "Niezbędne" },
+    { value: "Video", label: "Video" },
+    { value: "Audio", label: "Audio" },
+    { value: "Inne", label: "Inne" },
+  ];
+
   return (
     <>
-      {" "}
-      <select
-        className={Styles.select}
-        onChange={(event) => setShop(event.target.value)}
-      >
-        <option className={Styles.option} value="Niezbędne">
-          Niezbędne do działania komputera
-        </option>
-        <option value="Audio">Audio</option>
-        <option value="Video">Video</option>
-        <option value="Inne">Inne</option>
-      </select>
+      <Select onChange={(event) => selectCategory(event.target.value)}>
+        {options.map((item) => (
+          <option value={item.value}>{item.label}</option>
+        ))}
+      </Select>
     </>
   );
 }

@@ -5,7 +5,7 @@ body {
   background-size: 33.5vw;
 }
 
-.table {
+table {
   margin: 0 auto;
   width: 80%;
   border-collapse: collapse;
@@ -13,8 +13,9 @@ body {
   table-layout: fixed;
   margin-bottom: 20px;
   text-align: left;
+  position: relative;
 }
-.table,
+table,
 td,
 th {
   font-size: 20px;
@@ -25,20 +26,20 @@ th {
   line-height: 30px;
 }
 
-.tr > .td:nth-child(1) .topTable {
+tr > td:nth-child(1) .topTable {
   background-color: #d9d9d9;
 }
-.td:first-child {
+td:first-child {
   cursor: move;
 }
 
-.th {
+th {
   cursor: pointer;
 }
-.table tbody tr:nth-child(even) {
+table tbody tr:nth-child(even) {
   background-color: #e8e8e85c;
 }
-.button {
+button {
   font-size: 10px;
   margin: 5px;
   padding: 5px 12px;
@@ -49,43 +50,6 @@ th {
   margin: 5px;
   padding: 5px 12px;
   background-color: rgba(253, 7, 7, 0.704);
-}
-.buttonExport {
-  font-size: 10px;
-  margin: 5px;
-  padding: 5px 12px;
-  font-size: 40px;
-  background-color: rgba(25, 119, 18, 0.444);
-}
-
-.filtrExpot {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0 auto;
-}
-.buttonClass {
-  border-color: rgb(171, 171, 171);
-  background-color: rgb(255, 252, 252);
-  color: rgb(0, 0, 0);
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-  margin: 20px;
-}
-
-.buttonClass:hover {
-  /* border-color: rgb(25, 119, 18); */
-  color: rgb(0, 0, 0);
-  background-color: rgb(12, 176, 0);
-}
-
-.buttonClass:focus {
-  /* border-color: rgb(25, 119, 18); */
-  color: rgb(0, 0, 0);
-  background-color: rgba(12, 176, 0);
 }
 
 .divText {

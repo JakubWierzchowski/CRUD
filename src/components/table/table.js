@@ -1,77 +1,21 @@
 import React, { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import db from "../../firebase-config";
-
-import styled from "styled-components";
-import styless from "./tableStyle.module.css";
-import jsPDF from "jspdf";
+import styless from "./TableStyle.module.css";
 import "jspdf-autotable";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import EditRows from "./EditRows";
+import FilterExportPDF from "./FilterExportPDF";
+import { EditButton, DeleteButton } from "./CrudButtonStyled";
 
-const Input = styled.input`
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-  margin: 20px;
-  width: 400px;
-  background-color: rgb(240, 243, 245);
-`;
-
-const Input2 = styled.input`
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 15px;
-  margin: 0 auto;
-  width: 150px;
-
-  background-color: #868484c7;
-  ::placeholder {
-    color: white;
-  }
-`;
-
-const DeleteButton = styled.button`
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-  background-color: rgba(253, 7, 7, 0.704);
-  margin: 5px;
-`;
-const EditButton = styled.button`
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-  background-color: rgba(18, 178, 7, 0.744);
-  margin: 5px;
-`;
-const CancelButton = styled.button`
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-  background-color: #e8e8e8b7;
-`;
-
-export default function Table({
-  handleDelete,
-  users,
-  setusers,
-  sum,
-  part,
-  firm,
-  price,
-  categories,
-}) {
+export default function Table({ handleDelete, users, setusers, sumItem }) {
+  const [editPart, seteditPart] = useState("");
+  const [editFirm, seteditFirm] = useState("");
+  const [editPrice, seteditPrice] = useState("");
+  const [editCategories, seteditCategories] = useState("");
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState("ASC");
+  const [click, setClick] = useState(false);
 
   const sorting = (col) => {
     if (order === "ASC") {
@@ -79,9 +23,9 @@ export default function Table({
         a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
       );
       setusers(sorted);
-      setOrder("DCS");
+      setOrder("DSC");
     }
-    if (order === "DCS") {
+    if (order === "DSC") {
       const sorted = [...users].sort((a, b) =>
         a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
       );
@@ -90,42 +34,19 @@ export default function Table({
     }
   };
 
-  const columns = [
-    { title: "Jednostka", field: "part" },
-    { title: "Firma/model", field: "firm" },
-    { title: "Cena", field: "price", type: "numeric" },
-    { title: "Kategoria", field: "categories" },
-  ];
-  const downloadPdf = () => {
-    const doc = new jsPDF();
-    doc.text("Lista przedmiotów", 20, 10);
-    doc.autoTable({
-      theme: "grid",
-      columns: columns.map((col) => ({ ...col, dataKey: col.field })),
-      body: users,
-    });
-    doc.save("table.pdf");
-  };
-  const [click, setClick] = useState(false);
-
-  const handleEdit = (id, users) => {
+  const handleEdit = () => {
     setClick(true);
   };
 
-  const [editPart, seteditPart] = useState("");
-  const [editFirm, seteditFirm] = useState("");
-  const [editPrice, seteditPrice] = useState("");
-  const [editCategories, seteditCategories] = useState("");
-
-  const updateUser = async (id, user) => {
+  console.log(users);
+  const updateUser = async (id, user, users) => {
     const userDoc = doc(db, "officeEq", id);
     const newFields = {
-      part: editPart === "" ? "uzupełnij pole" : editPart,
-      firm: editFirm === "" ? "uzupełnij pole" : editFirm,
-      price: editPrice === "" ? "0" : editPrice,
-      categories: editCategories === "" ? "uzupełnij pole" : editCategories,
+      part: editPart === "" ? "uzupełnij dane" : editPart,
+      firm: editFirm === "" ? "uzupełnij dane" : editFirm,
+      price: editPrice === "" ? "0" : Number(editPrice),
+      categories: editCategories === "" ? "uzupełnij dane" : editCategories,
     };
-
     setClick(false);
     await updateDoc(userDoc, newFields);
   };
@@ -143,42 +64,31 @@ export default function Table({
 
   return (
     <>
-      <div className={styless.filtrExpot}>
-        <Input
-          type="text"
-          placeholder="Wpisz kategorię do filtrowania"
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-        ></Input>
-        <button className={styless.buttonClass} onClick={() => downloadPdf()}>
-          Export PDF
-        </button>
-      </div>{" "}
+      <FilterExportPDF setSearch={setSearch} users={users} />
       <DragDropContext onDragEnd={(result) => handleDragEnd(result)}>
-        <table className={styless.table}>
+        <table>
           <thead>
-            <tr className={(styless.tr, styless.topTable)}>
-              <th className={styless.th}>
+            <tr className={styless.topTable}>
+              <th>
                 <strong>L.P</strong>
               </th>
 
-              <th className={styless.th} onClick={() => sorting("part")}>
+              <th onClick={() => sorting("part")}>
                 <strong>Jednostka</strong>
               </th>
 
-              <th className={styless.th} onClick={() => sorting("firm")}>
+              <th onClick={() => sorting("firm")}>
                 <strong>Firma/Model</strong>
               </th>
-              <th className={styless.th} onClick={() => sorting("price")}>
+              <th onClick={() => sorting("price")}>
                 <strong>Cena</strong>
               </th>
 
-              <th className={styless.th} onClick={() => sorting("categories")}>
+              <th onClick={() => sorting("categories")}>
                 <strong>Kategoria</strong>
               </th>
 
-              <th className={styless.th}>
+              <th>
                 <strong>Usuń/Edytuj</strong>
               </th>
             </tr>
@@ -201,53 +111,18 @@ export default function Table({
                   .map((val, index) => (
                     <>
                       {click ? (
-                        <tr key={val.id}>
-                          <td>{index + 1}</td>
-                          <td>
-                            <Input2
-                              placeholder={val.part}
-                              onChange={(event) =>
-                                seteditPart(event.target.value)
-                              }
-                              required
-                            />
-                          </td>
-                          <td>
-                            <Input2
-                              placeholder={val.firm}
-                              onChange={(event) =>
-                                seteditFirm(event.target.value)
-                              }
-                              required
-                            />
-                          </td>
-                          <td>
-                            <Input2
-                              placeholder={val.price}
-                              onChange={(event) =>
-                                seteditPrice(event.target.value)
-                              }
-                              required
-                            />
-                          </td>
-                          <td>
-                            <Input2
-                              placeholder={val.categories}
-                              onChange={(event) =>
-                                seteditCategories(event.target.value)
-                              }
-                              required
-                            />
-                          </td>
-                          <td>
-                            <EditButton onClick={() => updateUser(val.id)}>
-                              Save
-                            </EditButton>
-                            <CancelButton onClick={handleCancel}>
-                              cancel
-                            </CancelButton>
-                          </td>
-                        </tr>
+                        <EditRows
+                          val={val}
+                          index={index}
+                          seteditPart={seteditPart}
+                          seteditFirm={seteditFirm}
+                          seteditPrice={seteditPrice}
+                          seteditCategories={seteditCategories}
+                          updateUser={updateUser}
+                          handleCancel={handleCancel}
+                        >
+                          {" "}
+                        </EditRows>
                       ) : (
                         <Draggable
                           draggableId={val.id}
@@ -256,25 +131,15 @@ export default function Table({
                         >
                           {(provider) => (
                             <tr
-                              className={styless.tr}
                               key={val.id}
                               {...provider.draggableProps}
                               ref={provider.innerRef}
                             >
-                              <td
-                                className={styless.td}
-                                {...provider.dragHandleProps}
-                              >
-                                {index + 1}
-                              </td>
-                              <td className={styless.td} key={val.part}>
-                                {val.part}
-                              </td>
-                              <td className={styless.td}>{val.firm} </td>
-                              <td className={styless.td}>
-                                {Number(val.price) + "$"}
-                              </td>
-                              <td className={styless.td}>{val.categories} </td>
+                              <td {...provider.dragHandleProps}>{index + 1}</td>
+                              <td key={val.part}>{val.part}</td>
+                              <td>{val.firm} </td>
+                              <td>{Number(val.price) + "$"}</td>
+                              <td>{val.categories} </td>
                               <td>
                                 <DeleteButton
                                   onClick={() => handleDelete(val.id)}
@@ -296,7 +161,7 @@ export default function Table({
                 <tr>
                   <td colSpan="6">
                     <div className={styless.divText}>
-                      Łączny koszyk: {sum}$ dla ilości elementów :{" "}
+                      Łączny koszyk: {sumItem}$ dla ilości elementów :{" "}
                       {users.length}
                     </div>
                   </td>

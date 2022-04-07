@@ -4,12 +4,12 @@ import db from "./firebase-config";
 
 import Styles from "./App.module.css";
 import { doc, deleteDoc } from "firebase/firestore";
-import Table from "./components/table/table";
+import Table from "./components/Table/Table";
 import CategoriesSum from "./components/CategoriesSum/CategoriesSum";
 import SelectCategories from "./components/SelectCategories/SelectCategories";
 import AddItems from "./components/AddItems/AddItems";
 
-function AddnewPlayer() {
+function AddITComponents() {
   const [users, setusers] = useState([{ name: "Loading...", id: "initial" }]);
   const [part, setPart] = useState("");
   const [firm, setFirm] = useState("");
@@ -35,19 +35,19 @@ function AddnewPlayer() {
     []
   );
 
-  const x = users.map((item) => parseFloat(item.price));
-  const sum = x.reduce((acc, el) => acc + el, 0);
+  const parseFloatItemPrice = users.map((item) => parseFloat(item.price));
+  const sumItem = parseFloatItemPrice.reduce((acc, el) => acc + el, 0);
 
   const handleDelete = async (id) => {
     const docRef = doc(db, "officeEq", id);
     await deleteDoc(docRef);
   };
 
+  const filterCategorySum = users.filter((price) => price.categories === shop);
   return (
     <>
       <div className={Styles.main}>
         <div className={Styles.mainBackground}>
-          {" "}
           <AddItems
             setPart={setPart}
             setFirm={setFirm}
@@ -58,13 +58,14 @@ function AddnewPlayer() {
             firm={firm}
             handleNew={handleNew}
             price={price}
+            setCategories={setCategories}
           />
           <div>
             <Table
               handleDelete={handleDelete}
               users={users}
               setusers={setusers}
-              sum={sum}
+              sumItem={sumItem}
               len={users.length}
               setShop={setShop}
               part={part}
@@ -72,14 +73,14 @@ function AddnewPlayer() {
               price={price}
               categories={categories}
             />
-          </div>{" "}
-          {console.log(part)}
+          </div>
           <div>
             <h2>Wybierz dla której karegori wyliczyć sume :</h2>
-            <SelectCategories setShop={setShop} />
+            <SelectCategories selectCategory={setShop} />
             <CategoriesSum
-              users={users.filter((price) => price.categories === shop)}
+              users={filterCategorySum}
               shop={shop}
+              sumItem={sumItem}
             />
           </div>
         </div>
@@ -87,4 +88,4 @@ function AddnewPlayer() {
     </>
   );
 }
-export default AddnewPlayer;
+export default AddITComponents;
