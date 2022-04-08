@@ -1,6 +1,7 @@
 import { onSnapshot, collection, addDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import db from "./firebase-config";
+import { H2 } from "./components/CategoriesSum/CategoriesSum";
 
 import Styles from "./App.module.css";
 import { doc, deleteDoc } from "firebase/firestore";
@@ -75,9 +76,9 @@ function AddITComponents() {
             />
           </div>
           <div>
-            <h2 className={Styles.h2}>
+            <H2 className={Styles.h2}>
               Wybierz dla której karegori wyliczyć sume :
-            </h2>
+            </H2>
             <SelectCategories selectCategory={setShop} />
             <CategoriesSum
               users={filterCategorySum}

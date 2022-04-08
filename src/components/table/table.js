@@ -38,7 +38,7 @@ export default function Table({ handleDelete, users, setusers, sumItem }) {
     setClick(true);
   };
 
-  const updateUser = async (id, user, users) => {
+  const updateUser = async (id) => {
     const userDoc = doc(db, "officeEq", id);
     const newFields = {
       part: editPart === "" ? "uzupełnij dane" : editPart,

@@ -2,9 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Select = styled.select`
-  width: 80%;
   display: block;
-  border: 1px solid;
   border-radius: 8px;
   padding: 6px 10px;
   margin: 10px 0 20px 0;
