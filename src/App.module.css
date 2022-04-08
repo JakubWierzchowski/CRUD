@@ -11,21 +11,27 @@
 
 .mainBackground {
   padding: 20px;
-  margin: 15px;
   background-color: rgb(255, 255, 255);
-}
-.flex {
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-  margin: 40px auto;
-  padding: 20px;
-  align-items: center;
-  flex-direction: column;
-  background-color: rgb(240, 243, 245);
-  width: 500px;
 }
 
 .h1 {
   margin-bottom: 20px;
+}
+
+@media (min-width: 425px) and (max-width: 768px) {
+  .mainBackground {
+    padding: 10px;
+  }
+  .h2 {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 425px) {
+  .mainBackground {
+    padding: 8px;
+  }
+  .h2 {
+    font-size: 12px;
+  }
 }

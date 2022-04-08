@@ -75,7 +75,9 @@ function AddITComponents() {
             />
           </div>
           <div>
-            <h2>Wybierz dla której karegori wyliczyć sume :</h2>
+            <h2 className={Styles.h2}>
+              Wybierz dla której karegori wyliczyć sume :
+            </h2>
             <SelectCategories selectCategory={setShop} />
             <CategoriesSum
               users={filterCategorySum}

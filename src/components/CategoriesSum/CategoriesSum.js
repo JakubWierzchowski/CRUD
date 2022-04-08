@@ -1,4 +1,5 @@
 import React from "react";
+import Styles from "../../App.module.css";
 
 export default function Koszyk({ users, shop }) {
   const categoriesSum = users.map((item) => parseFloat(item.price));
@@ -6,9 +7,9 @@ export default function Koszyk({ users, shop }) {
 
   return (
     <>
-      <h2>
+      <h2 className={Styles.h2}>
         Koszyk dla kategorii {shop} wynosi : {sum}$ dla ilości elementów :{" "}
-        {users.length}
+        {users.length}.
       </h2>
     </>
   );

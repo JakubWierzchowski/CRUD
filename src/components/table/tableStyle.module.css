@@ -7,7 +7,7 @@ body {
 
 table {
   margin: 0 auto;
-  width: 80%;
+  width: 90%;
   border-collapse: collapse;
   border-spacing: 0;
   table-layout: fixed;
@@ -24,6 +24,9 @@ th {
   font-weight: 400;
   vertical-align: top;
   line-height: 30px;
+  text-align: justify;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 tr > td:nth-child(1) .topTable {
@@ -55,4 +58,36 @@ button {
 .divText {
   display: flex;
   justify-content: flex-end;
+}
+
+/* @media (min-width: 320px) and (max-width: 768px) {
+  table {
+    margin: 0 auto;
+    width: 100%;
+    table-layout: fixed;
+    margin-bottom: 20px;
+    font-size: 10px;
+  }
+} */
+
+@media screen and (min-width: 375px) and (max-width: 768px) {
+  table,
+  td,
+  th {
+    width: 100%;
+    font-size: 12px;
+    padding: 5px;
+    line-height: 20px;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 374px) {
+  table,
+  td,
+  th {
+    width: 100%;
+    font-size: 8px;
+    padding: 5px;
+    line-height: 15px;
+  }
 }

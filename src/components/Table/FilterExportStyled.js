@@ -15,6 +15,9 @@ export const Input = styled.input`
   margin: 20px;
   width: 400px;
   background-color: rgb(240, 243, 245);
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 export const Button = styled.button`
@@ -30,5 +33,8 @@ export const Button = styled.button`
   :hover {
     color: rgb(0, 0, 0);
     background-color: rgba(12, 176, 0);
+  }
+  @media (max-width: 768px) {
+    font-size: 12px;
   }
 `;

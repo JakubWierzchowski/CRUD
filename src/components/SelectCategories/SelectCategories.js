@@ -13,6 +13,9 @@ const Select = styled.select`
   cursor: pointer;
   line-height: 1.1;
   background-color: #fff;
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 export default function SelectCategories({ selectCategory }) {

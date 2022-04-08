@@ -8,11 +8,15 @@ const EditInput = styled.input`
   border-radius: 8px;
   font-size: 15px;
   margin: 0 auto;
-  width: 150px;
-
+  width: auto;
   background-color: #868484c7;
   ::placeholder {
     color: white;
+  }
+  @media (max-width: 768px) {
+    font-size: 8px;
+    padding: 4px;
+    width: 40px;
   }
 `;
 

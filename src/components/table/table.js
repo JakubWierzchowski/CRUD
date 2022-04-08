@@ -78,7 +78,7 @@ export default function Table({ handleDelete, users, setusers, sumItem }) {
               </th>
 
               <th onClick={() => sorting("firm")}>
-                <strong>Firma/Model</strong>
+                <strong>Firma Model</strong>
               </th>
               <th onClick={() => sorting("price")}>
                 <strong>Cena</strong>
@@ -89,7 +89,7 @@ export default function Table({ handleDelete, users, setusers, sumItem }) {
               </th>
 
               <th>
-                <strong>Usuń/Edytuj</strong>
+                <strong>Usuń Edytuj</strong>
               </th>
             </tr>
           </thead>
