@@ -6,7 +6,7 @@ Aplikacja składa się z operacji CRUD umożliwiających dodawanie, usuwanie ora
 3. "react-beautiful-dnd": "^13.1.0",    
 4. "styled-components": "^5.3.5".
 
-Pierwsze dwie pozwalają na exportowanie stworzonej tabeli do pliku pdf, trzecia umożliwia użycie drag and drop na produktach zawartych w tabeli oraz czwarta odpowiada za stylowanie w plikach js. W projekcie można znaleźć również filtrowanie po kategoriach oraz sortowanie alfabetyczne po kliknięciu w nagłówek tabeli. Aby wszystko działało należy wgrać swoj firebaseConfig oraz zmienić firestore/rules znajdującym się w nowo utworzonym projekcie firebase na : allow read, write: if true;
+Pierwsze dwie pozwalają na exportowanie stworzonej tabeli do pliku pdf, trzecia umożliwia użycie drag and drop na produktach zawartych w tabeli oraz czwarta odpowiada za stylowanie w plikach js. W projekcie można znaleźć również filtrowanie po kategoriach oraz sortowanie alfabetyczne po kliknięciu w nagłówek tabeli. Aby wszystko działało poprawnie należy wpisać swoje apiKey do firebase-config.js oraz zmienić firestore/rules w nowo utworzonym projekcie firebase na : allow read, write: if true;
 
 ### Getting Started with Create React App
 
