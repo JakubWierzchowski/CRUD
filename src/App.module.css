@@ -14,24 +14,14 @@
   background-color: rgb(255, 255, 255);
 }
 
-.h1 {
-  margin-bottom: 20px;
-}
-
 @media (min-width: 425px) and (max-width: 768px) {
   .mainBackground {
     padding: 10px;
-  }
-  .h2 {
-    font-size: 16px;
   }
 }
 
 @media (min-width: 320px) and (max-width: 425px) {
   .mainBackground {
     padding: 8px;
-  }
-  .h2 {
-    font-size: 12px;
   }
 }

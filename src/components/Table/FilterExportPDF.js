@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { FilterExport, Input, Button } from "./FilterExportStyled";

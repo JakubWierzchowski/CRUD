@@ -1,24 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { EditButton, CancelButton } from "./CrudButtonStyled";
-
-const EditInput = styled.input`
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 15px;
-  margin: 0 auto;
-  width: auto;
-  background-color: #868484c7;
-  ::placeholder {
-    color: white;
-  }
-  @media (max-width: 768px) {
-    font-size: 8px;
-    padding: 4px;
-    width: 40px;
-  }
-`;
+import { EditButton, CancelButton, EditInput } from "./CrudButtonStyled";
 
 export default function EditRows({
   val,

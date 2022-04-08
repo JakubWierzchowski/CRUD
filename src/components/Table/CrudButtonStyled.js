@@ -17,6 +17,24 @@ export const EditButton = styled.button`
   }
 `;
 
+export const EditInput = styled.input`
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 15px;
+  margin: 0 auto;
+  width: auto;
+  background-color: #868484c7;
+  ::placeholder {
+    color: white;
+  }
+  @media (max-width: 768px) {
+    font-size: 8px;
+    padding: 4px;
+    width: 40px;
+  }
+`;
+
 export const DeleteButton = styled.button`
   border: 0;
   padding: 8px;
