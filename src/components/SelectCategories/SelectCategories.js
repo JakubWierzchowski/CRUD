@@ -30,7 +30,9 @@ export default function SelectCategories({ selectCategory }) {
     <>
       <Select onChange={(event) => selectCategory(event.target.value)}>
         {options.map((item) => (
-          <option value={item.value}>{item.label}</option>
+          <option key={item.value} value={item.value}>
+            {item.label}
+          </option>
         ))}
       </Select>
     </>
