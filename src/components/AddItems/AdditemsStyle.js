@@ -49,23 +49,6 @@ export const FlexContainer = styled.div`
     padding: 10px;
   }
 `;
-export const CompleteData = styled.div`
-  background-color: rgba(253, 7, 7, 0.704);
-  width: 100%;
-  border-radius: 10px;
-  text-align: center;
-  padding: 6px 10px;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  display: block;
-  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
-  margin: 10px 0;
-  font-size: 20px;
-  @media (max-width: 768px) {
-    width: 90%;
-    font-size: 12px;
-  }
-`;
 
 export const H1 = styled.h1`
 margin-bottom: 20px;

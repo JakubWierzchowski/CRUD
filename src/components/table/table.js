@@ -1,69 +1,63 @@
-import React, { useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { doc, deleteDoc } from "firebase/firestore";
 import db from "../../firebase-config";
-import styless from "./TableStyle.module.css";
+import styless from "./tableStyle.module.css";
 import "jspdf-autotable";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import EditRows from "./EditRows";
 import FilterExportPDF from "./FilterExportPDF";
 import { EditButton, DeleteButton } from "./CrudButtonStyled";
+import { onSnapshot, collection } from "firebase/firestore";
 
-export default function Table({ handleDelete, users, setusers, sumItem }) {
-  const [editPart, seteditPart] = useState("");
-  const [editFirm, seteditFirm] = useState("");
-  const [editPrice, seteditPrice] = useState("");
-  const [editCategories, seteditCategories] = useState("");
+export default function Table({ sumItem }) {
+  const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState("ASC");
   const [click, setClick] = useState(false);
 
   const sorting = (col) => {
     if (order === "ASC") {
-      const sorted = [...users].sort((a, b) =>
+      const sorted = [...items].sort((a, b) =>
         a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
       );
-      setusers(sorted);
+      setItems(sorted);
       setOrder("DSC");
     }
     if (order === "DSC") {
-      const sorted = [...users].sort((a, b) =>
+      const sorted = [...items].sort((a, b) =>
         a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
       );
-      setusers(sorted);
+      setItems(sorted);
       setOrder("ASC");
     }
   };
-
+  const handleDragEnd = (result) => {
+    let tempuser = [...items];
+    let [selecredRow] = tempuser.splice(result.source.index, 1);
+    tempuser.splice(result.destination.index, 0, selecredRow);
+    setItems(tempuser);
+  };
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "officeEq"), (snapshot) =>
+        setItems(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      ),
+    []
+  );
+  const handleDelete = async (id) => {
+    const docRef = doc(db, "officeEq", id);
+    await deleteDoc(docRef);
+  };
   const handleEdit = () => {
     setClick(true);
   };
-
-  const updateUser = async (id) => {
-    const userDoc = doc(db, "officeEq", id);
-    const newFields = {
-      part: editPart === "" ? "uzupełnij dane" : editPart,
-      firm: editFirm === "" ? "uzupełnij dane" : editFirm,
-      price: editPrice === "" ? "0" : Number(editPrice),
-      categories: editCategories === "" ? "uzupełnij dane" : editCategories,
-    };
-    setClick(false);
-    await updateDoc(userDoc, newFields);
-  };
-
   const handleCancel = (id) => {
     setClick(false);
   };
 
-  const handleDragEnd = (result) => {
-    let tempuser = [...users];
-    let [selecredRow] = tempuser.splice(result.source.index, 1);
-    tempuser.splice(result.destination.index, 0, selecredRow);
-    setusers(tempuser);
-  };
-
   return (
     <>
-      <FilterExportPDF setSearch={setSearch} users={users} />
+      <FilterExportPDF setSearch={setSearch} items={items} />
       <DragDropContext onDragEnd={(result) => handleDragEnd(result)}>
         <table>
           <thead>
@@ -71,22 +65,18 @@ export default function Table({ handleDelete, users, setusers, sumItem }) {
               <th>
                 <strong>L.P</strong>
               </th>
-
               <th onClick={() => sorting("part")}>
                 <strong>Jednostka</strong>
               </th>
-
               <th onClick={() => sorting("firm")}>
                 <strong>Firma Model</strong>
               </th>
               <th onClick={() => sorting("price")}>
                 <strong>Cena</strong>
               </th>
-
               <th onClick={() => sorting("categories")}>
                 <strong>Kategoria</strong>
               </th>
-
               <th>
                 <strong>Usuń Edytuj</strong>
               </th>
@@ -95,7 +85,7 @@ export default function Table({ handleDelete, users, setusers, sumItem }) {
           <Droppable droppableId="tbody">
             {(provider) => (
               <tbody ref={provider.innerRef} {...provider.droppableProps}>
-                {users
+                {items
                   .filter((val) => {
                     if (search == "") {
                       return val;
@@ -113,15 +103,9 @@ export default function Table({ handleDelete, users, setusers, sumItem }) {
                         <EditRows
                           val={val}
                           index={index}
-                          seteditPart={seteditPart}
-                          seteditFirm={seteditFirm}
-                          seteditPrice={seteditPrice}
-                          seteditCategories={seteditCategories}
-                          updateUser={updateUser}
                           handleCancel={handleCancel}
-                        >
-                          {" "}
-                        </EditRows>
+                          setClick={setClick}
+                        />
                       ) : (
                         <Draggable
                           draggableId={val.id}
@@ -161,7 +145,7 @@ export default function Table({ handleDelete, users, setusers, sumItem }) {
                   <td colSpan="6">
                     <div className={styless.divText}>
                       Łączny koszyk: {sumItem}$ dla ilości elementów :{" "}
-                      {users.length}
+                      {items.length}
                     </div>
                   </td>
                 </tr>

@@ -16,19 +16,19 @@ const Select = styled.select`
   }
 `;
 
-export default function SelectCategories({ selectCategory }) {
+export default function SelectCategories({ handleInputChange, value, name }) {
   const options = [
-    { value: "Niezbędne", label: "Niezbędne" },
-    { value: "Video", label: "Video" },
-    { value: "Audio", label: "Audio" },
-    { value: "Inne", label: "Inne" },
+    { values: "Niezbędne", label: "Niezbędne" },
+    { values: "Video", label: "Video" },
+    { values: "Audio", label: "Audio" },
+    { values: "Inne", label: "Inne" },
   ];
 
   return (
     <>
-      <Select onChange={(event) => selectCategory(event.target.value)}>
+      <Select onChange={handleInputChange} value={value} name={name}>
         {options.map((item) => (
-          <option key={item.value} value={item.value}>
+          <option key={item.values} value={item.values}>
             {item.label}
           </option>
         ))}

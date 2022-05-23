@@ -16,66 +16,20 @@ function AddITComponents() {
   const [firm, setFirm] = useState("");
   const [price, setPrice] = useState("");
   const [categories, setCategories] = useState("Niezbędne");
-  const playerCollectionRef = collection(db, "officeEq");
-  const [shop, setShop] = useState("Niezbędne");
 
-  const handleNew = async (e) => {
-    e.preventDefault();
-    await addDoc(playerCollectionRef, {
-      part,
-      firm,
-      price,
-      categories,
-    });
-  };
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "officeEq"), (snapshot) =>
-        setusers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      ),
-    []
-  );
+  const [shop, setShop] = useState("Niezbędne");
 
   const parseFloatItemPrice = users.map((item) => parseFloat(item.price));
   const sumItem = parseFloatItemPrice.reduce((acc, el) => acc + el, 0);
-
-  const handleDelete = async (id) => {
-    const docRef = doc(db, "officeEq", id);
-    await deleteDoc(docRef);
-  };
 
   const filterCategorySum = users.filter((price) => price.categories === shop);
   return (
     <>
       <div className={Styles.main}>
         <div className={Styles.mainBackground}>
-          <AddItems
-            setPart={setPart}
-            setFirm={setFirm}
-            setPrice={setPrice}
-            SelectCategories={SelectCategories}
-            setShop={setShop}
-            part={part}
-            firm={firm}
-            handleNew={handleNew}
-            price={price}
-            setCategories={setCategories}
-          />
-          <div>
-            <Table
-              handleDelete={handleDelete}
-              users={users}
-              setusers={setusers}
-              sumItem={sumItem}
-              len={users.length}
-              setShop={setShop}
-              part={part}
-              firm={firm}
-              price={price}
-              categories={categories}
-            />
-          </div>
-          <div>
+          <AddItems SelectCategories={SelectCategories} setShop={setShop} />
+
+          {/* <div>
             <H2 className={Styles.h2}>
               Wybierz dla której karegori wyliczyć sume :
             </H2>
@@ -85,7 +39,7 @@ function AddITComponents() {
               shop={shop}
               sumItem={sumItem}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </>
